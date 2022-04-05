@@ -1,4 +1,4 @@
-module main.go
+module github.com/forrestwilkins/gost-town
 
 go 1.18
 

@@ -55,6 +55,22 @@ func setup(window fyne.Window) (*World, fyne.CanvasObject) {
 		{x: 400, y: 350, color: color.RGBA{0, 255, 0, 255}, w: pixelSize, h: pixelSize},
 		{x: 400, y: 450, color: color.RGBA{0, 0, 255, 255}, w: pixelSize, h: pixelSize},
 		{x: 400, y: 550, color: color.RGBA{255, 255, 255, 255}, w: pixelSize, h: pixelSize},
+		{x: 400, y: 250, color: color.RGBA{255, 0, 0, 255}, w: pixelSize, h: pixelSize},
+		{x: 400, y: 350, color: color.RGBA{0, 255, 0, 255}, w: pixelSize, h: pixelSize},
+		{x: 400, y: 450, color: color.RGBA{0, 0, 255, 255}, w: pixelSize, h: pixelSize},
+		{x: 400, y: 550, color: color.RGBA{255, 255, 255, 255}, w: pixelSize, h: pixelSize},
+		{x: 400, y: 250, color: color.RGBA{255, 0, 0, 255}, w: pixelSize, h: pixelSize},
+		{x: 400, y: 350, color: color.RGBA{0, 255, 0, 255}, w: pixelSize, h: pixelSize},
+		{x: 400, y: 450, color: color.RGBA{0, 0, 255, 255}, w: pixelSize, h: pixelSize},
+		{x: 400, y: 550, color: color.RGBA{255, 255, 255, 255}, w: pixelSize, h: pixelSize},
+		{x: 400, y: 250, color: color.RGBA{255, 0, 0, 255}, w: pixelSize, h: pixelSize},
+		{x: 400, y: 350, color: color.RGBA{0, 255, 0, 255}, w: pixelSize, h: pixelSize},
+		{x: 400, y: 450, color: color.RGBA{0, 0, 255, 255}, w: pixelSize, h: pixelSize},
+		{x: 400, y: 550, color: color.RGBA{255, 255, 255, 255}, w: pixelSize, h: pixelSize},
+		{x: 400, y: 250, color: color.RGBA{255, 0, 0, 255}, w: pixelSize, h: pixelSize},
+		{x: 400, y: 350, color: color.RGBA{0, 255, 0, 255}, w: pixelSize, h: pixelSize},
+		{x: 400, y: 450, color: color.RGBA{0, 0, 255, 255}, w: pixelSize, h: pixelSize},
+		{x: 400, y: 550, color: color.RGBA{255, 255, 255, 255}, w: pixelSize, h: pixelSize},
 	}}
 
 	raster := canvas.NewRasterWithPixels(world.draw)
