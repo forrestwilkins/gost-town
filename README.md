@@ -6,5 +6,5 @@ Fun with Go
 
 ```bash
 # Development
-$ cd gost-town && go run main.go
+$ cd gost-town/cmd/life && go run main.go
 ```
