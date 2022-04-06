@@ -2,22 +2,18 @@ package main
 
 import (
 	"image/color"
+	"log"
 	"math/rand"
 	"time"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/app"
-	"fyne.io/fyne/v2/canvas"
-	"fyne.io/fyne/v2/container"
+	"github.com/hajimehoshi/ebiten"
 )
 
-const WorldSize = 400
+const Width, Height = 500, 500
 
 type World struct {
-	window fyne.Window
-	canvas fyne.CanvasObject
-
-	pixels []Pixel
+	generation int
+	pixels     []Pixel
 }
 
 type Pixel struct {
@@ -25,82 +21,73 @@ type Pixel struct {
 	color      color.Color
 }
 
-func (world *World) Layout(objects []fyne.CanvasObject, size fyne.Size) {
-	world.canvas.Resize(size)
+func (world *World) render(screen *ebiten.Image) {
+	for x := 0; x < Width; x++ {
+		for y := 0; y < Height; y++ {
+			for p := 0; p < len(world.pixels); p++ {
+				pixel := world.pixels[p]
+
+				if x >= pixel.x && x <= pixel.x+pixel.w && y >= pixel.y && y <= pixel.y+pixel.h {
+					screen.Set(x, y, pixel.color)
+				}
+			}
+		}
+	}
+
 }
 
-func (world *World) MinSize(objects []fyne.CanvasObject) fyne.Size {
-	return fyne.NewSize(WorldSize, WorldSize)
+func (world *World) frame(screen *ebiten.Image) error {
+	var err error = nil
+
+	if world.generation%4 == 0 {
+		err = world.update()
+	}
+
+	if !ebiten.IsDrawingSkipped() {
+		world.render(screen)
+	}
+
+	world.generation++
+
+	return err
 }
 
-func (world *World) refresh() {
-	world.window.Canvas().Refresh(world.canvas)
-}
-
-func (world *World) draw(px, py, w, h int) color.Color {
+func (world *World) update() error {
 	for p := 0; p < len(world.pixels); p++ {
-		pixel := world.pixels[p]
-
-		if px >= pixel.x && px <= pixel.x+pixel.w && py >= pixel.y && py <= pixel.y+pixel.h {
-			return pixel.color
-		}
+		world.pixels[p].walk()
 	}
-	return color.RGBA{0, 0, 0, 255}
+
+	return nil
 }
 
-func setup(window fyne.Window) (*World, fyne.CanvasObject) {
-	pixelSize := 5
-	world := &World{window: window, pixels: []Pixel{
-		{x: 400, y: 250, color: color.RGBA{255, 0, 0, 255}, w: pixelSize, h: pixelSize},
-		{x: 400, y: 350, color: color.RGBA{0, 255, 0, 255}, w: pixelSize, h: pixelSize},
-		{x: 400, y: 450, color: color.RGBA{0, 0, 255, 255}, w: pixelSize, h: pixelSize},
-		{x: 400, y: 550, color: color.RGBA{255, 255, 255, 255}, w: pixelSize, h: pixelSize},
-	}}
-
-	raster := canvas.NewRasterWithPixels(world.draw)
-	world.canvas = raster
-
-	return world, container.New(world, world.canvas)
+func (pixel *Pixel) walk() {
+	speed := 1
+	pixel.x += random(-speed, speed)
+	pixel.y += random(-speed, speed)
 }
 
-func draw(window fyne.Window, world *World) {
-	for {
-		time.Sleep(time.Millisecond * 10)
-
-		for p := 0; p < len(world.pixels); p++ {
-			world.pixels[p].x += walk()
-			world.pixels[p].y += walk()
-
-			raster := canvas.NewRasterWithPixels(world.draw)
-			world.canvas = raster
-			obj := container.New(world, world.canvas)
-			window.SetContent(obj)
-		}
-	}
-}
-
-func walk() int {
-	var (
-		min = -1
-		max = 1
-	)
+func random(min int, max int) int {
 	rand.Seed(time.Now().UnixNano())
 	return min + rand.Intn(max-min+1)
 }
 
+func setup() *World {
+	pixelSize := 2
+
+	world := &World{pixels: []Pixel{
+		{x: Width / 2, y: Height * 0.2, color: color.RGBA{255, 0, 0, 255}, w: pixelSize, h: pixelSize},
+		{x: Width / 2, y: Height * 0.4, color: color.RGBA{0, 255, 0, 255}, w: pixelSize, h: pixelSize},
+		{x: Width / 2, y: Height * 0.6, color: color.RGBA{0, 0, 255, 255}, w: pixelSize, h: pixelSize},
+		{x: Width / 2, y: Height * 0.8, color: color.RGBA{255, 255, 255, 255}, w: pixelSize, h: pixelSize},
+	}}
+
+	return world
+}
+
 func main() {
-	_app := app.New()
-	window := _app.NewWindow("Gost Town")
-	window.CenterOnScreen()
+	world := setup()
 
-	world, worldContainer := setup(window)
-
-	go func() {
-		draw(window, world)
-	}()
-
-	window.SetContent(worldContainer)
-
-	window.Resize(fyne.NewSize(WorldSize, WorldSize))
-	window.ShowAndRun()
+	if err := ebiten.Run(world.frame, Width, Height, 0.8, "Gost Town"); err != nil {
+		log.Fatal(err)
+	}
 }
