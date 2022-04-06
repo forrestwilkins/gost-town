@@ -41,7 +41,7 @@ func (world *World) render(screen *ebiten.Image) {
 func (world *World) frame(screen *ebiten.Image) error {
 	var err error = nil
 
-	if world.generation%5 == 0 {
+	if world.generation%4 == 0 {
 		err = world.update()
 	}
 
@@ -63,8 +63,9 @@ func (world *World) update() error {
 }
 
 func (pixel *Pixel) walk() {
-	pixel.x += random(-1, 1)
-	pixel.y += random(-1, 1)
+	speed := 1
+	pixel.x += random(-speed, speed)
+	pixel.y += random(-speed, speed)
 }
 
 func random(min int, max int) int {
@@ -73,7 +74,7 @@ func random(min int, max int) int {
 }
 
 func setup() *World {
-	pixelSize := 1
+	pixelSize := 2
 
 	world := &World{pixels: []Pixel{
 		{x: Width / 2, y: Height * 0.2, color: color.RGBA{255, 0, 0, 255}, w: pixelSize, h: pixelSize},
