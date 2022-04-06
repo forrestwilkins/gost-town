@@ -11,7 +11,7 @@ import (
 	"github.com/hajimehoshi/ebiten"
 )
 
-const Width, Height = 400, 500
+const Width, Height = 500, 500
 
 type World struct {
 	generation int
@@ -41,18 +41,25 @@ func (world *World) render(screen *ebiten.Image) {
 func (world *World) frame(screen *ebiten.Image) error {
 	var err error = nil
 
+	if world.generation%5 == 0 {
+		err = world.update()
+	}
+
 	if !ebiten.IsDrawingSkipped() {
-		world.update()
 		world.render(screen)
 	}
+
+	world.generation++
 
 	return err
 }
 
-func (world *World) update() {
+func (world *World) update() error {
 	for p := 0; p < len(world.pixels); p++ {
 		world.pixels[p].walk()
 	}
+
+	return nil
 }
 
 func (pixel *Pixel) walk() {
@@ -69,10 +76,10 @@ func setup() *World {
 	pixelSize := 1
 
 	world := &World{pixels: []Pixel{
-		{x: 100, y: 100, color: color.RGBA{255, 0, 0, 255}, w: pixelSize, h: pixelSize},
-		{x: 100, y: 200, color: color.RGBA{0, 255, 0, 255}, w: pixelSize, h: pixelSize},
-		{x: 100, y: 300, color: color.RGBA{0, 0, 255, 255}, w: pixelSize, h: pixelSize},
-		{x: 100, y: 400, color: color.RGBA{255, 255, 255, 255}, w: pixelSize, h: pixelSize},
+		{x: Width / 2, y: Height * 0.2, color: color.RGBA{255, 0, 0, 255}, w: pixelSize, h: pixelSize},
+		{x: Width / 2, y: Height * 0.4, color: color.RGBA{0, 255, 0, 255}, w: pixelSize, h: pixelSize},
+		{x: Width / 2, y: Height * 0.6, color: color.RGBA{0, 0, 255, 255}, w: pixelSize, h: pixelSize},
+		{x: Width / 2, y: Height * 0.8, color: color.RGBA{255, 255, 255, 255}, w: pixelSize, h: pixelSize},
 	}}
 
 	return world
@@ -81,7 +88,7 @@ func setup() *World {
 func main() {
 	world := setup()
 
-	if err := ebiten.Run(world.frame, Width, Height, 2, "Gost Town"); err != nil {
+	if err := ebiten.Run(world.frame, Width, Height, 0.8, "Gost Town"); err != nil {
 		log.Fatal(err)
 	}
 }
