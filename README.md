@@ -1,6 +1,6 @@
 ## Gost Town
 
-Fun with Go
+A space for virtual nomads to create endless lines of flight.
 
 ## Running the app
 
