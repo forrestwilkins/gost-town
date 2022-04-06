@@ -10,7 +10,7 @@
       "request": "launch",
       "mode": "auto",
       // Change path to test other programs
-      "program": "internal/game/main.go"
+      "program": "cmd/game/main.go"
     }
   ]
 }
