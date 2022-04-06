@@ -2,7 +2,10 @@ module github.com/forrestwilkins/gost-town
 
 go 1.18
 
-require fyne.io/fyne/v2 v2.1.4
+require (
+	fyne.io/fyne/v2 v2.1.4
+	github.com/hajimehoshi/ebiten v1.12.12
+)
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -17,7 +20,9 @@ require (
 	github.com/srwiley/rasterx v0.0.0-20200120212402-85cb7272f5e9 // indirect
 	github.com/stretchr/testify v1.5.1 // indirect
 	github.com/yuin/goldmark v1.3.8 // indirect
-	golang.org/x/image v0.0.0-20200430140353-33d19683fad8 // indirect
+	golang.org/x/exp v0.0.0-20190731235908-ec7cb31e5a56 // indirect
+	golang.org/x/image v0.0.0-20200801110659-972c09e46d76 // indirect
+	golang.org/x/mobile v0.0.0-20210208171126-f462b3930c8f // indirect
 	golang.org/x/net v0.0.0-20210405180319-a5a99cb37ef4 // indirect
 	golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c // indirect
 	golang.org/x/text v0.3.3 // indirect
