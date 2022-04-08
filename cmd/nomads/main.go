@@ -27,18 +27,6 @@ type Position struct {
 	x, y int
 }
 
-func (world *World) Update(screen *ebiten.Image) error {
-	if world.generation%4 == 0 {
-		for p := 0; p < len(world.nomads); p++ {
-			world.nomads[p].walk()
-		}
-	}
-
-	world.generation++
-
-	return nil
-}
-
 func (world *World) Draw(screen *ebiten.Image) {
 	for x := 0; x < ScreenWidth; x++ {
 		for y := 0; y < ScreenHeight; y++ {
@@ -57,6 +45,17 @@ func (world *World) Draw(screen *ebiten.Image) {
 	}
 }
 
+func (world *World) Update(screen *ebiten.Image) error {
+	if world.generation%4 == 0 {
+		for p := 0; p < len(world.nomads); p++ {
+			world.nomads[p].walk()
+		}
+	}
+	world.generation++
+
+	return nil
+}
+
 func (g *World) Layout(outsideWidth, outsideHeight int) (int, int) {
 	return ScreenWidth, ScreenHeight
 }
@@ -68,7 +67,6 @@ func (nomad *Nomad) walk() {
 }
 
 func random(min int, max int) int {
-	rand.Seed(time.Now().UnixNano())
 	return min + rand.Intn(max-min+1)
 }
 
@@ -86,6 +84,10 @@ func setup() *World {
 	}}
 
 	return world
+}
+
+func init() {
+	rand.Seed(time.Now().UnixNano())
 }
 
 func main() {
