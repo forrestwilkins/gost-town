@@ -1,6 +1,6 @@
 ## Gost Town
 
-A space for virtual nomads to create endless lines of flight.
+A space for virtual nomads to pursue endless lines of flight.
 
 ## Running the app
 
