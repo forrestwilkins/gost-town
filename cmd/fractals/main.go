@@ -51,12 +51,22 @@ func (f *fractal) scaleChannel(c float64, start, end uint32) uint8 {
 func (f *fractal) scaleColor(c float64, start, end color.Color) color.Color {
 	r1, g1, b1, _ := start.RGBA()
 	r2, g2, b2, _ := end.RGBA()
-	return color.RGBA{f.scaleChannel(c, r1, r2), f.scaleChannel(c, g1, g2), f.scaleChannel(c, b1, b2), 0xff}
+	return color.RGBA{
+		f.scaleChannel(c, r1, r2),
+		f.scaleChannel(c, g1, g2),
+		f.scaleChannel(c, b1, b2),
+		0xff,
+	}
 }
 
 func (f *fractal) mandelbrot(px, py, w, h int) color.Color {
 	backgroundColor := color.RGBA{0, 0, 0, 255}
-	edgeColor := color.RGBA{uint8(rand.Intn(255)), uint8(rand.Intn(255)), uint8(rand.Intn(255)), 255}
+	edgeColor := color.RGBA{
+		uint8(rand.Intn(255)),
+		uint8(rand.Intn(255)),
+		uint8(rand.Intn(255)),
+		255,
+	}
 	innerColor := color.RGBA{0, 0, 0, 255}
 
 	drawScale := 3.5 * f.currScale
@@ -128,7 +138,6 @@ func Show(win fyne.Window, currIterations uint) fyne.CanvasObject {
 	win.Canvas().SetOnTypedRune(fractal.fractalRune)
 
 	return container.New(fractal, fractal.canvas)
-
 }
 
 func main() {
