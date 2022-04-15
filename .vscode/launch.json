@@ -10,7 +10,7 @@
       "request": "launch",
       "mode": "auto",
       // Change path to test other programs
-      "program": "cmd/nomads/main.go"
+      "program": "cmd/life-time/main.go"
     }
   ]
 }
