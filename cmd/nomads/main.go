@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"time"
 
+	random "github.com/forrestwilkins/gost-town/internal/nomads"
 	"github.com/hajimehoshi/ebiten"
 )
 
@@ -34,7 +35,9 @@ func (world *World) Draw(screen *ebiten.Image) {
 				nomad := world.nomads[p]
 				position := nomad.position
 
-				if x >= position.x && x <= position.x+nomad.w && y >= position.y && y <= position.y+nomad.h {
+				if x >= position.x && x <= position.x+nomad.w &&
+					y >= position.y &&
+					y <= position.y+nomad.h {
 					screen.Set(x, y, nomad.color)
 					world.nomads[p].colorMap[position] = nomad.color
 				} else if val, ok := world.nomads[p].colorMap[Position{x: x, y: y}]; ok {
@@ -62,12 +65,8 @@ func (g *World) Layout(outsideWidth, outsideHeight int) (int, int) {
 
 func (nomad *Nomad) walk() {
 	speed := 1
-	nomad.position.x += random(-speed, speed)
-	nomad.position.y += random(-speed, speed)
-}
-
-func random(min int, max int) int {
-	return min + rand.Intn(max-min+1)
+	nomad.position.x += random.RandomWithin(-speed, speed)
+	nomad.position.y += random.RandomWithin(-speed, speed)
 }
 
 func setup() *World {
@@ -77,10 +76,34 @@ func setup() *World {
 	nomadSize := 2
 
 	world := &World{nomads: []Nomad{
-		{position: Position{x: ScreenWidth * 0.5, y: ScreenHeight * 0.2}, color: color.RGBA{255, 0, 0, 255}, w: nomadSize, h: nomadSize, colorMap: make(map[Position]color.Color)},
-		{position: Position{x: ScreenWidth * 0.5, y: ScreenHeight * 0.4}, color: color.RGBA{0, 255, 0, 255}, w: nomadSize, h: nomadSize, colorMap: make(map[Position]color.Color)},
-		{position: Position{x: ScreenWidth * 0.5, y: ScreenHeight * 0.6}, color: color.RGBA{0, 0, 255, 255}, w: nomadSize, h: nomadSize, colorMap: make(map[Position]color.Color)},
-		{position: Position{x: ScreenWidth * 0.5, y: ScreenHeight * 0.8}, color: color.RGBA{255, 255, 255, 255}, w: nomadSize, h: nomadSize, colorMap: make(map[Position]color.Color)},
+		{
+			position: Position{x: ScreenWidth * 0.5, y: ScreenHeight * 0.2},
+			color:    color.RGBA{255, 0, 0, 255},
+			w:        nomadSize,
+			h:        nomadSize,
+			colorMap: make(map[Position]color.Color),
+		},
+		{
+			position: Position{x: ScreenWidth * 0.5, y: ScreenHeight * 0.4},
+			color:    color.RGBA{0, 255, 0, 255},
+			w:        nomadSize,
+			h:        nomadSize,
+			colorMap: make(map[Position]color.Color),
+		},
+		{
+			position: Position{x: ScreenWidth * 0.5, y: ScreenHeight * 0.6},
+			color:    color.RGBA{0, 0, 255, 255},
+			w:        nomadSize,
+			h:        nomadSize,
+			colorMap: make(map[Position]color.Color),
+		},
+		{
+			position: Position{x: ScreenWidth * 0.5, y: ScreenHeight * 0.8},
+			color:    color.RGBA{255, 255, 255, 255},
+			w:        nomadSize,
+			h:        nomadSize,
+			colorMap: make(map[Position]color.Color),
+		},
 	}}
 
 	return world
