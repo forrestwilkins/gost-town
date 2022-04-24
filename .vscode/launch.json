@@ -24,6 +24,13 @@
       "request": "launch",
       "mode": "auto",
       "program": "cmd/fractals/main.go"
+    },
+    {
+      "name": "Server",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "cmd/server/main.go"
     }
   ]
 }
