@@ -19,7 +19,6 @@ func initDB() *gorm.DB {
 		panic("failed to connect database")
 	}
 
-	// Migrate the schema
 	db.AutoMigrate(&User{})
 
 	return db
@@ -32,9 +31,12 @@ func main() {
 	app.Get("/read", func(c *fiber.Ctx) error {
 		var user User
 
-		db.First(&user)
+		err := db.Where(&User{Name: "nomad 1"}).Take(&user).Error
+		if err != nil {
+			c.SendString(err.Error())
+		}
 
-		return c.SendString(fmt.Sprint(user.Name))
+		return c.SendString(user.Name)
 	})
 
 	app.Post("/create", func(c *fiber.Ctx) error {
